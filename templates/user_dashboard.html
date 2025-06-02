@@ -1,0 +1,501 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Food Calories Prediction</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Jost:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static '/lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static '/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static '/css/style.css' %}" rel="stylesheet">
+
+    <!-- Internal CSS -->
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Jost', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #1a73e8;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand h1 {
+            color: white;
+            font-weight: 600;
+            font-size: 2.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-size: 16px;
+            padding: 12px 18px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ff6f61 !important;
+        }
+
+        /* Hero Section */
+        .hero-header {
+            background: linear-gradient(to right, #ff6f61, #ff9f68);
+            padding: 120px 0;
+            color: white;
+            text-align: center;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .hero-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .hero-header p {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary-gradient {
+            background: #ff6f61;
+            border-radius: 25px;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            color: white;
+            border: none;
+            box-shadow: 0 8px 20px rgba(255, 111, 97, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-primary-gradient:hover {
+            background-color: #ff9f68;
+            transform: translateY(-5px);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .about-section h1 {
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .about-section .icon {
+            font-size: 2.5rem;
+            color: #ff6f61;
+            margin-right: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1a73e8;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff6f61;
+            padding: 15px;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background-color: #ff9f68;
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-header p {
+                font-size: 1rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 8px 12px;
+            }
+
+            .about-section {
+                padding: 60px 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="51">
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+        <!-- Navbar & Hero Start -->
+        <div class="container-xxl position-relative p-0" id="home">
+            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+                <a href="" class="navbar-brand p-0">
+                    <h1 class="m-0">Nutri Track</h1>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto py-0">
+                        <a href="#home" class="nav-item nav-link active">Home</a>
+                        <a href="#food_insight" class="nav-item nav-link active">Food Insight</a>
+                        <a href="#body_calorie_calculator" class="nav-item nav-link active">Body Calorie Calculator</a>
+                        <a href="#track_my_calories" class="nav-item nav-link active">Track My Calories</a>
+                        <a href="#update_profile" class="nav-item nav-link active">Update Profile</a>
+                    </div>
+                    <a href="logout" class="btn btn-primary-gradient rounded-pill py-2 px-4 ms-3 d-none d-lg-block">Logout</a>
+                </div>
+            </nav>
+
+        <div class="container-xxl hero-header">
+            <div class="container px-lg-5" style="margin-top:80px;">
+                <div class="row g-5">
+                    <div class="col-lg-8 text-center text-lg-start">
+                        <h1 class="text-white mb-4 animated slideInDown">Welcome, {{ user.name }}!</h1>
+                        <p class="text-white pb-3 animated slideInDown">Let's predict your daily calorie needs, track the calories you consume, and gain insights to help you reach your fitness goals!</p>
+                        <a href="#about" class="btn btn-primary-gradient py-sm-3 px-4 px-sm-5 rounded-pill me-3 animated slideInLeft">Read More</a>
+                    </div>
+                    <div class="col-lg-4 d-flex justify-content-center justify-content-lg-end wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="owl-carousel screenshot-carousel">
+                            <img src="{% static '/img/cal1.webp' %}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Navbar & Hero End -->
+
+        <!-- About Start -->
+    <div class="container-xxl py-5 about-section" id="about">
+        <div class="container py-5 px-lg-5">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <h5 class="text-primary-gradient fw-medium">About</h5>
+                    <h1 class="mb-4">Stay On Track with Your Calorie Goals</h1>
+                    <p class="mb-4" style="text-align: justify;">Stay on top of your health with tools to track your food, calculate your calorie requirements, and achieve your wellness goals. Our platform makes it easy to maintain a balanced lifestyle by providing personalized insights into your nutrition and fitness. Whether you're aiming to lose weight, gain muscle, or simply maintain a healthy diet, we offer the resources you need to succeed. With real-time tracking and goal-setting features, you'll have the support you need to stay motivated and make informed choices every day. Take control of your health and reach your full potential with just a few clicks!</p>
+                    <div class="row g-4 mb-4">
+                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.5s">
+                            <div class="d-flex">
+                                <i class="fa fa-utensils fa-2x text-primary-gradient flex-shrink-0 mt-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img class="img-fluid wow fadeInUp" data-wow-delay="0.5s" src="{% static '/img/calburn.gif' %}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- food insights start -->
+    <div class="container-xxl py-5 food_insight-section" id="food_insight">
+        <div class="container py-5 px-lg-5">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h5 class="text-primary-gradient fw-medium">Food Insights</h5>
+                <h1 class="mb-5">Predict Food & Calories</h1>
+            </div>
+        <div class="row justify-content-center">
+        <h3 style="text-align: center; font-size: 24px; color: #333; margin-bottom: 20px;">Food Insight</h3>
+
+            <form action="predict_food" method="POST" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                {% csrf_token %}
+                <div class="form-group mb-4" style="margin-bottom: 20px;">
+                    <label for="food_image" class="text-dark" style="font-size: 16px; font-weight: bold;">Upload Food Image</label>
+                    <input type="file" class="form-control" id="food_image" name="food_image" required style="padding: 10px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box;">
+                </div>
+            
+                <button type="submit" class="btn btn-primary btn-block" style="background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; width: 100%;">Upload & Predict</button>
+            </form>
+        </div>
+    </div>
+    <!--food insight section closed-->
+
+    <!-- body_calorie_calculator start-->
+    <!-- body_calorie_calculator start-->
+    <!-- body_calorie_calculator start -->
+<div class="container-xxl py-5 body_calorie_calculator-section" id="body_calorie_calculator" style="background-color: #f9f9f9;">
+    <div class="container py-5 px-lg-5" style="max-width: 800px; margin: 0 auto;">
+        <h5 class="text-primary-gradient fw-medium" style="font-size: 22px; color: #0069d9;">Body Calorie Calculator</h5>
+        <h1 class="mb-4" style="font-weight: bold; font-size: 32px; color: #333;">Let's Predict How Many Calories Your Body Needs!</h1>
+        
+        <form action="predict_calories" method="POST" style="border: 1px solid #ddd; padding: 30px; border-radius: 12px; background-color: #fff; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+            {% csrf_token %}
+            
+            <div class="form-group mb-4">
+                <label for="name" class="text-dark" style="font-weight: 600; font-size: 14px; color: #333;">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}" readonly style="padding: 12px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background-color: #f8f9fa;">
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="age" style="font-weight: 600; font-size: 14px; color: #333;">Age</label>
+                <input type="number" class="form-control" id="age" name="age" value="{{ user.age }}" readonly style="padding: 12px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background-color: #f8f9fa;">
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="gender" style="font-size: 16px; font-weight: 600; color: #333;">Gender</label>
+                <select name="gender" id="gender" class="form-control" style="padding: 12px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background-color: #f8f9fa;">
+                    <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+                    <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+                    <option value="other" {% if user.gender == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="height" style="font-weight: 600; font-size: 14px; color: #333;">Height (cm)</label>
+                <input type="number" class="form-control" id="height" name="height" value="{{ user.height }}" readonly style="padding: 12px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background-color: #f8f9fa;">
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="weight" style="font-weight: 600; font-size: 14px; color: #333;">Weight (kg)</label>
+                <input type="number" class="form-control" id="weight" name="weight" value="{{ user.weight }}" readonly style="padding: 12px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background-color: #f8f9fa;">
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="activity_level" style="font-weight: 600; font-size: 14px; color: #333;">Activity Level</label>
+                <select class="form-control" id="activity_level" name="activity_level" readonly style="padding: 12px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc; background-color: #f8f9fa;">
+                    <option value="" disabled>Select activity level</option>
+                        <option value="Sedentary" {% if user.activity_level == "Sedentary" %}selected{% endif %}>Sedentary</option>
+                        <option value="Lightly Active" {% if user.activity_level == "Lightly Active" %}selected{% endif %}>Lightly Active</option>
+                        <option value="Moderately Active" {% if user.activity_level == "Moderately Active" %}selected{% endif %}>Moderately Active</option>
+                        <option value="Very Active" {% if user.activity_level == "Very Active" %}selected{% endif %}>Very Active</option>
+                        <option value="Super Active" {% if user.activity_level == "Super Active" %}selected{% endif %}>Super Active</option>
+                </select>
+            </div>
+            
+            <!-- Submit Button for Calculation -->
+            <button type="submit" class="btn btn-primary btn-block" style="background-color: rgb(89, 0, 255); border: none; padding: 14px; border-radius: 8px; color: white; font-size: 16px; width: 100%; transition: background-color 0.3s;">
+                Calculate Calorie Requirement
+            </button>
+        </form>
+        
+        <!-- Display the Result -->
+        <div class="mt-4">
+            {% if calories_needed %}
+                <p style="font-weight: bold; font-size: 18px; color: #333;"><strong>Your Daily Calorie Requirement: </strong>{{ calories_needed }} kcal/day</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- body_calorie_calculator end -->
+
+<!-- body calorie calculator end -->
+
+
+    <!-- track my calories start -->
+    <div class="container-xxl py-5 track_my_calories-section" id="track_my_calories" style="background-color:white;">
+        <div class="container py-5 px-lg-5">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h5 class="text-primary-gradient fw-medium">Track My Calories</h5>
+                <h1 class="mb-5">Upload Food Image to Track Calories</h1>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="bg-light rounded p-5">
+                        <form action="track_calories" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group mb-4">
+                                <label for="food_image_track" class="text-dark">Food Image</label>
+                                <input type="file" class="form-control" id="food_image_track" name="food_image_track" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Track Calories</button>
+                        </form>
+                        <div class="mt-3">
+                            {% if tracked_calories %}
+                                <p><strong>Calories Consumed: </strong>{{ tracked_calories }} kcal</p>
+                                <p><strong>Calories Needed to Lose or Gain: </strong>{{ calories_goal }} kcal</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--track my calories end-->
+    
+    <div class="container-xxl py-5" id="update_profile" style="background-color: #f8f9fa; padding: 50px 0;">
+        <div class="container py-5 px-lg-5" style="max-width: 600px; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);">
+            <h2 style="text-align: center; color: #333; margin-bottom: 20px; font-weight: bold;">Update Your Profile</h2>
+            {% if messages %}
+    <div style="text-align: center; margin-bottom: 15px;">
+        {% for message in messages %}
+            <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};
+                      font-size: 16px; font-weight: bold;">
+                {{ message }}
+            </p>
+        {% endfor %}
+    </div>
+{% endif %}
+    
+            <form method="POST" action="update_profile" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+    
+                <!-- Name -->
+                <label style="font-weight: 600; color: #444;">Full Name:</label>
+                <input type="text" name="name" value="{{ user.name }}" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+    
+                <!-- Email (Non-editable) -->
+                <label style="font-weight: 600; color: #444;">Email:</label>
+                <input type="email" name="email" value="{{ user.email }}" readonly 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; background-color: #e9ecef;">
+    
+                <!-- Contact -->
+                <label style="font-weight: 600; color: #444;">Contact Number:</label>
+                <input type="text" name="contact" value="{{ user.contact }}" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+    
+                <!-- Age -->
+                <label style="font-weight: 600; color: #444;">Age:</label>
+                <input type="number" name="age" value="{{ user.age }}" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+    
+                <!-- Height -->
+                <label style="font-weight: 600; color: #444;">Height (cm):</label>
+                <input type="number" name="height" value="{{ user.height }}" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+    
+                <!-- Weight -->
+                <label style="font-weight: 600; color: #444;">Weight (kg):</label>
+                <input type="number" name="weight" value="{{ user.weight }}" required 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+    
+                <!-- Activity Level -->
+                <div class="form-group mb-4">
+                    <label for="activity_level" class="text-dark" style="font-weight: 600;">Activity Level</label>
+                    <select class="form-control" id="activity_level" name="activity_level" required>
+                        <option value="" disabled selected>Select activity level</option>
+                        <option value="Sedentary" {% if user.activity_level == "Sedentary" %}selected{% endif %}>Sedentary</option>
+                        <option value="Lightly Active" {% if user.activity_level == "Lightly Active" %}selected{% endif %}>Lightly Active</option>
+                        <option value="Moderately Active" {% if user.activity_level == "Moderately Active" %}selected{% endif %}>Moderately Active</option>
+                        <option value="Very Active" {% if user.activity_level == "Very Active" %}selected{% endif %}>Very Active</option>
+                        <option value="Super Active" {% if user.activity_level == "Super Active" %}selected{% endif %}>Super Active</option>
+                    </select>
+                </div>
+    
+                <!-- Gender -->
+                <label style="font-weight: 600; color: #444;">Gender:</label>
+                <select name="gender" id="gender" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+                    <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if user.gender == "Other" %}selected{% endif %}>Other</option>
+                </select>
+    
+                <!-- New Password (Optional) -->
+                <label style="font-weight: 600; color: #444;">New Password (optional):</label>
+                <input type="password" name="password" placeholder="Enter new password if changing" 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;">
+    
+                <!-- Submit Button -->
+                <button type="submit" 
+                        style="background-color: #ff7f50; color: white; padding: 12px; border: none; 
+                               border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%;
+                               transition: background-color 0.3s;">
+                    Update Profile
+                </button>
+    
+            </form>
+        </div>
+    </div>
+    
+    
+    
+
+    
+    <!-- Footer Start -->
+    <div class="container-fluid bg-primary text-light footer wow fadeIn" data-wow-delay="0.1s" style="background-color:white;">
+        <div class="container py-5 px-lg-5">
+            <div class="row g-5">
+            </div>
+            <div class="container px-lg-5">
+                <div class="copyright">
+                    <div class="row">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up text-white"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static '/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static '/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static '/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static '/lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static '/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static '/js/main.js' %}"></script>
+</body>
+
+</html>
